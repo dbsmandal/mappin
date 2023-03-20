@@ -1,28 +1,33 @@
 import axios from "axios";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { AiTwotoneStar } from 'react-icons/ai';
 import { MdCancel } from 'react-icons/md';
 import "./register.css";
 
-export default function Register({ setShowRegister }) {
+export default function Register({ setShowRegister,setShowLogin }) {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
-  const usernameRef = useRef();
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const [userName, setUserName] = useState(null)
+  const [email, setEmail] = useState(null)
+  const [password, setPassword] = useState(null)
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newUser = {
-      username: usernameRef.current.value,
-      email: emailRef.current.value,
-      password: passwordRef.current.value,
+      username: userName,
+      email: email,
+      password: password,
     };
 
     try {
       await axios.post("http://localhost:8800/api/users/register", newUser);
       setError(false);
       setSuccess(true);
+      setTimeout(() => {
+        setShowRegister(false)
+        setShowLogin(true)
+      }, 4000);
     } catch (err) {
       setError(true);
     }
@@ -34,20 +39,16 @@ export default function Register({ setShowRegister }) {
         <span>Register Now</span>
       </div>
       <form
-       onSubmit={handleSubmit}
-       >
+        onSubmit={handleSubmit}
+      >
         <input autoFocus placeholder="username"
-         ref={usernameRef}
-          />
+          onChange={(e) => setUserName(e.target.value)} />
         <input type="email" placeholder="email"
-         ref={emailRef} 
-         />
-        <input
-          type="password"
+          onChange={(e) => setEmail(e.target.value)} />
+        <input type="password"
           min="6"
           placeholder="password"
-          ref={passwordRef}
-        />
+          onChange={(e) => setPassword(e.target.value)} />
         <button className="registerBtn" type="submit">
           Register
         </button>

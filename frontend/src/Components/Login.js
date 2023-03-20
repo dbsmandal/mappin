@@ -1,19 +1,19 @@
 import axios from "axios";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { AiTwotoneStar } from 'react-icons/ai';
 import { MdCancel } from 'react-icons/md';
 import "./login.css";
 
 export default function Login({ setShowLogin,myStorage,setCurrentUser }) {
   const [error, setError] = useState(false);
-  const usernameRef = useRef();
-  const passwordRef = useRef();
+  const [userName,setUserName] = useState(null)
+  const [password,setPassword] = useState(null)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const user = {
-      username: usernameRef.current.value,
-      password: passwordRef.current.value,
+      username: userName,
+      password: password
     };
 
     try {
@@ -37,15 +37,15 @@ export default function Login({ setShowLogin,myStorage,setCurrentUser }) {
        onSubmit={handleSubmit}
        >
         <input autoFocus placeholder="username"
-         ref={usernameRef}
+         onChange={(e)=>setUserName(e.target.value)}
           />
         
         <input
           type="password"
           min="6"
           placeholder="password"
-          ref={passwordRef}
-        />
+          onChange={(e)=>setPassword(e.target.value)}
+          />
         <button className="loginBtn" type="submit">
           Log in
         </button>

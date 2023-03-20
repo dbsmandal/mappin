@@ -3,6 +3,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import Map, { Marker, Popup } from 'react-map-gl';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import { AiTwotoneStar } from 'react-icons/ai';
+import TimeAgo from 'react-timeago';
 import axios from 'axios';
 import './App.css'
 import Register from './Components/Register';
@@ -84,6 +85,15 @@ function App() {
       console.log(error)
     }
   }
+const handleRegister=()=>{
+  setShowRegister(true);
+  setShowLogin(false)
+}
+const handleLogin=()=>{
+  setShowRegister(false);
+  setShowLogin(true)
+}
+
 const handleLogout=()=>{
   myStorage.removeItem("user");
   setCurrentUser(null)
@@ -152,7 +162,7 @@ const handleLogout=()=>{
               <span className="username">
                 Created by <b>{currentplace.username}</b>
               </span>
-              <span className="date">{currentplace.createdAt}</span>
+              <span className="date"><TimeAgo date={currentplace.createdAt}  /> </span>
             </div>
           </Popup>
           ) : null
@@ -185,7 +195,7 @@ const handleLogout=()=>{
                     <option value="5">5</option>
 
                   </select>
-                  <button className='submitButton' type='submit' >Add Pin</button>
+                  <button className='add_pin' type='submit' >Add Pin</button>
                 </form>
               </div>
             </Popup>
@@ -193,14 +203,14 @@ const handleLogout=()=>{
         }
         {
           currentUser ? (<button className="button logout" onClick={handleLogout} >Log Out</button>) : (<div className="buttons">
-            <button className="button login" onClick={() => setShowLogin(true)}>Login</button>
+            <button className="button login" onClick={handleLogin}>Login</button>
             <button className="button register"
-              onClick={() => setShowRegister(true)}
+              onClick={handleRegister}
             > Register</button>
 
           </div>)
         }
-        {showRegister && <Register setShowRegister={setShowRegister} />}
+        {showRegister && <Register setShowRegister={setShowRegister} setShowLogin={setShowLogin} />}
         {showLogin && <Login setShowLogin={setShowLogin} myStorage={myStorage} setCurrentUser={setCurrentUser} />}
 
       </Map>
