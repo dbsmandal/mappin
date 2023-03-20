@@ -24,18 +24,18 @@
     cursor: pointer;
   }
   
-  .logo {
+  .registerlogo {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: slateblue;
+    color: purple;
     font-weight: 700;
   }
   
   .registerBtn {
     border: none;
     padding: 5px;
-    background-color: slateblue;
+    background-color: purple;
     color: white;
     cursor: pointer;
   }

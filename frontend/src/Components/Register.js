@@ -34,7 +34,7 @@ export default function Register({ setShowRegister,setShowLogin }) {
   };
   return (
     <div className="registerContainer">
-      <div className="logo">
+      <div className="registerlogo">
         <AiTwotoneStar className="logoIcon" />
         <span>Register Now</span>
       </div>
