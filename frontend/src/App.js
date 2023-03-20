@@ -5,16 +5,22 @@ import { FaMapMarkerAlt } from 'react-icons/fa';
 import { AiTwotoneStar } from 'react-icons/ai';
 import axios from 'axios';
 import './App.css'
+import Register from './Components/Register';
+import Login from './Components/Login';
 
 
 
 function App() {
-
-  const currentUser = 'goutam'
+  const myStorage=window.localStorage
+  const [currentUser, setCurrentUser] = useState(myStorage.getItem("user"))
   const [pins, setPins] = useState([]);
   const [currentplace, setCurrentPlace] = useState('');
   const [showPopup, setShowPopup] = useState(false);
   const [newPlace, setNewPlace] = useState(null);
+
+  const [showRegister, setShowRegister] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+
 
   //for new pin
 
@@ -53,8 +59,6 @@ function App() {
   }
 
   const handleAddClick = (e) => {
-    // console.log(e,e.lngLat.lat,e.lngLat.lng)
-
     setNewPlace({
       lat: e.lngLat.lat,
       long: e.lngLat.lng
@@ -80,8 +84,10 @@ function App() {
       console.log(error)
     }
   }
-
-  console.log(newPlace)
+const handleLogout=()=>{
+  myStorage.removeItem("user");
+  setCurrentUser(null)
+}
 
   return (
 
@@ -101,12 +107,12 @@ function App() {
             return (
               <div key={id}>
 
-                <Marker 
-                longitude={pin.long} 
-                latitude={pin.lat} 
-                anchor="bottom"
-                offsetLeft={-3.5 * viewState.zoom}
-                offsetTop={-7 * viewState.zoom}
+                <Marker
+                  longitude={pin.long}
+                  latitude={pin.lat}
+                  anchor="bottom"
+                  offsetLeft={-3.5 * viewState.zoom}
+                  offsetTop={-7 * viewState.zoom}
                   onClick={() => handleMapMarkerClick(pin)}
                 >
                   <FaMapMarkerAlt style={{
@@ -137,8 +143,8 @@ function App() {
               <p className="desc">{currentplace.desc}</p>
               <label>Rating:</label>
               <div className="stars">
-               {Array(currentplace.rating).fill( <AiTwotoneStar className='star' />)}
-    
+                {Array(currentplace.rating).fill(<AiTwotoneStar className='star' />)}
+
 
 
               </div>
@@ -185,6 +191,17 @@ function App() {
             </Popup>
           )
         }
+        {
+          currentUser ? (<button className="button logout" onClick={handleLogout} >Log Out</button>) : (<div className="buttons">
+            <button className="button login" onClick={() => setShowLogin(true)}>Login</button>
+            <button className="button register"
+              onClick={() => setShowRegister(true)}
+            > Register</button>
+
+          </div>)
+        }
+        {showRegister && <Register setShowRegister={setShowRegister} />}
+        {showLogin && <Login setShowLogin={setShowLogin} myStorage={myStorage} setCurrentUser={setCurrentUser} />}
 
       </Map>
 
