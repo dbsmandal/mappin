@@ -12,23 +12,22 @@ import Login from './Components/Login';
 
 
 function App() {
-  const myStorage=window.localStorage
+  const myStorage = window.localStorage
   const [currentUser, setCurrentUser] = useState(myStorage.getItem("user"))
   const [pins, setPins] = useState([]);
-  const [currentplace, setCurrentPlace] = useState('');
-  const [showPopup, setShowPopup] = useState(false);
+  const [currentplace, setCurrentPlace] = useState(null);
   const [newPlace, setNewPlace] = useState(null);
 
+  //login & register popup
   const [showRegister, setShowRegister] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
 
   //for new pin
-
   const [title, setTitle] = useState(null);
   const [desc, setDesc] = useState(null);
   const [rating, setRating] = useState(null)
-  // const [title,setTitle]=useState(null)
 
 
 
@@ -60,10 +59,16 @@ function App() {
   }
 
   const handleAddClick = (e) => {
-    setNewPlace({
-      lat: e.lngLat.lat,
-      long: e.lngLat.lng
-    })
+
+    if (!currentUser) {
+      setShowLogin(true)
+    } else {
+      setNewPlace({
+        lat: e.lngLat.lat,
+        long: e.lngLat.lng
+      })
+    }
+
   }
 
   const handleSubmit = async (e) => {
@@ -85,19 +90,19 @@ function App() {
       console.log(error)
     }
   }
-const handleRegister=()=>{
-  setShowRegister(true);
-  setShowLogin(false)
-}
-const handleLogin=()=>{
-  setShowRegister(false);
-  setShowLogin(true)
-}
+  const handleRegister = () => {
+    setShowRegister(true);
+    setShowLogin(false)
+  }
+  const handleLogin = () => {
+    setShowRegister(false);
+    setShowLogin(true)
+  }
 
-const handleLogout=()=>{
-  myStorage.removeItem("user");
-  setCurrentUser(null)
-}
+  const handleLogout = () => {
+    myStorage.removeItem("user");
+    setCurrentUser(null)
+  }
 
   return (
 
@@ -138,7 +143,7 @@ const handleLogout=()=>{
           })
         }
         {
-          showPopup === true ? (<Popup
+          showPopup && (<Popup
             longitude={currentplace.long}
             latitude={currentplace.lat}
             closeButton={true}
@@ -162,10 +167,10 @@ const handleLogout=()=>{
               <span className="username">
                 Created by <b>{currentplace.username}</b>
               </span>
-              <span className="date"><TimeAgo date={currentplace.createdAt}  /> </span>
+              <span className="date"><TimeAgo date={currentplace.createdAt} /> </span>
             </div>
           </Popup>
-          ) : null
+          )
         }
         {
           newPlace && (
