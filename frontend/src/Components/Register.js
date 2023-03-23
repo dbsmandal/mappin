@@ -21,7 +21,7 @@ export default function Register({ setShowRegister,setShowLogin }) {
     };
 
     try {
-      await axios.post("http://localhost:8800/api/users/register", newUser);
+      await axios.post("https://mapbackend-7x8i.onrender.com/api/users/register", newUser);
       setError(false);
       setSuccess(true);
       setTimeout(() => {
